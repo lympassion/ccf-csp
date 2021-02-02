@@ -2,7 +2,7 @@
 #include<algorithm>
 #include<queue>
 using namespace std;
-const int maxn=2e5+5;
+const int maxn=100005;
 struct node
 {
     int x,y;
@@ -32,8 +32,9 @@ int main()
     sort(s+1,s+1+n,cmp);
     int k=1;
     s1[k].x=s[1].x;
-    if(s[1].y==1)
+    if(s[1].y==1){
         s1[k].b++;
+    }
     else
         s1[k].a++;
     for(int i=2; i<=n; i++)

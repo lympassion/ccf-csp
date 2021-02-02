@@ -1,3 +1,13 @@
+/*
+* description:
+*    刚开始做的一道题，用时一天半
+*    起初思路是两层for循环，但显然会超时（50分），如果是根据https://blog.csdn.net/qq_40763929/article/details/86726906
+*    然后推导觉得当排序完成之后在相邻的两个数据之间做文章，但是考虑的比较复杂，就很难调bug（20分）
+*    参考12-2_ref.cpp，改正过来依然是20分。
+* Author: lympassion
+* Date:   2021/2/2
+*/
+
 # include <stdio.h>
 # include <stdlib.h>
 
@@ -8,8 +18,16 @@ struct predict
     int res;
 };
 
+struct threshold
+{
+    int y;
+    int pass, not_pass;  // 分别表示通过人数与不通过人数
+    int sum;  // 表示正确预测人数
+};
+
 
 struct predict pre[100005];
+struct threshold thrs[100005];
 
 int m;
 
@@ -19,118 +37,83 @@ int cmp(const void *a, const void *b){
     return ((struct predict*)a)->y > ((struct predict*)b)->y;
 }
 
-int* cal_correct(int i, int now){
-    // 当flag = 1时，是要计算i=0的所有预测情况
-    // 当flag = 0时，是要计算i>0的某个安全指数对应预测情况
-    // cnt[0]-----相同安全指数的个数，cnt[1]----安全指数为i时，预测正确的个数
-    // cnt[2]----返回j
+int cmp1(const void* a, const void* b){
+    struct threshold thrs1 = *(struct threshold*)a; 
+    struct threshold thrs2 = *(struct threshold*)b;
 
-    // 这里一定要注意static 类型的要下面再初始化，否则他的值会一直保留
-    static int cnt[3];  
-    cnt[0] = cnt[1] = 0;
-    
-    for(int j = i; j < m; j++){
-        cnt[0] += 1;
-
-        if(pre[j].y >= pre[i].y && pre[j].res != 0){
-            cnt[1] += 1;
-        }
-        else if(pre[j].y < pre[i].y && pre[j].res == 0){
-            cnt[1] += 1;
-        }
-        if((j==m-1) || (pre[j].y != pre[j+1].y)){
-            break;
-        }
-        
+    if(thrs1.sum == thrs2.sum){
+        return thrs1.y > thrs2.y; 
     }
-    for(int j = now; j < m; j++){
-        if((j==m-1) || (pre[j].y != pre[j+1].y)){
-            cnt[2] = j+1;
-            break;
-        }
-        
-    }
-    return cnt;
+    return thrs1.sum - thrs2.sum;
 }
 
+
+void rec_grade(int i, int k){
+    if(pre[i].res == 0){
+        thrs[k].not_pass++;
+    }
+    else{
+        thrs[k].pass++;
+    }
+}
+
+
+
 int main(){
-    int ans_y, ans_num, tmp_y, tmp_num, tmp_num_pre, last_ind;
-    int* cnt_res = (int*) malloc(3 * sizeof(int));
-    
+    int m, k, grade_sum;
 
     scanf("%d", &m);
-
+    
     for(int i = 0; i < m; i++){
         scanf("%d %d", &pre[i].y, &pre[i].res);
     }
 
     qsort(pre, m, sizeof(pre[0]), cmp);
 
-    ans_y   = tmp_y = pre[0].y;
-    ans_num = 0;
-    // 两遍for循环超时
-    // for(int i = 0; i < m; i++){
-    //     tmp_num = 0;
-    //     tmp_y   = pre[i].y;  // 阙值
-    //     for(int j = 0; j < m; j++){
-    //         if(pre[j].y >= tmp_y && pre[j].res != 0){
-    //             tmp_num += 1;
-    //         }
-    //         else if(pre[j].y < tmp_y && pre[j].res == 0){
-    //             tmp_num += 1;
-    //         }
-    //     }
-    //     // ans_y   = ans_num > tmp_num ? ans_y : tmp_y;  // 这里没有改变ans_num
-    //     if(ans_num <= tmp_num){
-    //         ans_y   = tmp_y;
-    //         ans_num = tmp_num;
-    //     }
-    // }
-
-    // 这个题最后发现是一道规律题 下一个不同数字a(i+1)的正确个数是现在的数字a(i)
-    // 对应的正确个数 + (a(i)这个数的预测错误个数 - a(i)这个数的预测正确个数)
-    // tmp_num = 0;
-    for(int i = 0; i < m; i=cnt_res[2]){
-        
-        if(i == 0){  // 第一个单独处理
-            // cnt_res = cal_correct(i, 1);
-            // tmp_num = cnt_res[1];
-            tmp_num = 0;
-            tmp_y   = pre[i].y;  // 阙值
-            for(int j = 0; j < m; j++){
-                if(pre[j].y >= tmp_y && pre[j].res != 0){
-                    tmp_num += 1;
-                }
-                else if(pre[j].y < tmp_y && pre[j].res == 0){
-                    tmp_num += 1;
-                }
-                if(pre[j].y == pre[0].y){
-                    cnt_res[2] = j+1;
-                }
-            }
+    
+    // 将相同安全系数的放到一起，统计该安全系数对应考试情况
+    k = 0;
+    thrs[0].y = pre[0].y;
+    rec_grade(0, 0);
+    for(int i = 1; i < m; i++){
+        if(pre[i].y == thrs[k].y){
+            rec_grade(i, k);
         }
         else{
-            cnt_res = cal_correct(last_ind, i);  // 这里的i-1是上一个安全指数对应的索引，而不是简单地向前推
-            tmp_num = tmp_num + cnt_res[0] - 2*cnt_res[1];
+            k++;
+            thrs[k].y = pre[i].y;
+            rec_grade(i, k);
         }
-
-        if(ans_num <= tmp_num){
-            ans_y   = pre[i].y;
-            ans_num = tmp_num;
-        }
-        last_ind = i;
-        // i++;
-        // while ((i<m-1) && pre[i].y == pre[i+1].y)
-        // {
-        //     i++;
-        // }
-        
-        // cnt_res[2] = cnt_res[2]==0 ? cnt_res[2]+1 : cnt_res[2]; // 否则再第二遍循环的时候会陷入i=1的循环
     }
 
 
+    // grade_sum---记录比自己小的不合格，比自己大的合格
+    grade_sum = 0;
+    for(int i = 0; i <= k; i++){
+        grade_sum += thrs[i].not_pass;
+        thrs[i].not_pass = grade_sum;
+    }
+    grade_sum = 0;
+    for(int i = k; i >= 0; i--){
+        grade_sum += thrs[i].pass;
+        thrs[i].pass = grade_sum;
+    }
+    
+    for(int i = 0; i <= k; i++){
+        if(i == 0){
+            thrs[i].sum = thrs[i].pass;
+        }
+        else{
+            thrs[i].sum = thrs[i-1].not_pass + thrs[i].pass;
+        }
+    }
 
-    printf("%d\n", ans_y);
+    // 这里的个数写成了k，排序错误，这个bug要注意
+    // qsort(thrs, k, sizeof(thrs[0]), cmp1);
+
+
+    qsort(thrs, k+1, sizeof(thrs[0]), cmp1);
+    printf("%d\n", thrs[k].y);
 
     return 0;
 }
