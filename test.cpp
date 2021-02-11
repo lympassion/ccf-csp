@@ -1,39 +1,51 @@
-#include <iostream>
-
+#include<iostream>
+#include<algorithm>
+#include<map>
 using namespace std;
-
-bool isOK(int n){
-	
-	if(n%7==0)
-		return false;
-	
-	while(n>0){
-		if(n%10==7)
-			return false;
-		n=n/10;
+typedef long long ll;
+const int N=1e3+50;
+struct node{
+	int x,y;
+	node(){
 	}
-	
-	return true;
-}
+	node(int a,int b)
+	{
+		x=a;
+		y=b;
+	}
 
-int main(int argc, char** argv) {
-	
-	int res[4]={0}; 
-	int n;
-	int num=0;
-	int count=0;
-	
+	bool operator <(const node &oth)const
+	{
+		if(x!=oth.x)
+			return x<oth.x;
+		return y<oth.y;
+	}
+}h[N];
+map<node,bool>mp;//查询某个点是否存在，存在=1，否则=0 
+int c[6];
+int main()
+{
+	int n,x,y;
 	cin>>n;
-	
-	for(int i=0;count<n;i++){
-		if(!isOK(++num))
-			res[i%4]++;
-		else
-			count++;
+	for(int i=1;i<=n;i++)
+	{
+		scanf("%d%d",&x,&y);
+		h[i]=node(x,y);
+		mp[h[i]]=1;
 	}
-	
-	for(int i=0;i<4;i++)
-		cout<<res[i]<<endl;
-	
+	for(int i=1;i<=n;i++)
+	{
+		int cnt=0;
+		x=h[i].x;
+		y=h[i].y;
+		if(mp[node(x+1,y)]&&mp[node(x-1,y)]&&mp[node(x,y+1)]&&mp[node(x,y-1)])
+		{
+			cnt=mp[node(x+1,y+1)]+mp[node(x+1,y-1)]+mp[node(x-1,y+1)]+mp[node(x-1,y-1)];
+			c[cnt]++;
+		}
+		
+	}
+	for(int i=0;i<5;i++)
+		printf("%d\n",c[i]);
 	return 0;
 }
