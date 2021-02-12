@@ -39,10 +39,10 @@ int main(){
     }
 
     mid_v_f = n%2==0 ? sum/2.0 : sum; 
-    flag = 1;
-    if(n%2 == 0 && sum%2 != 0){
-        flag = 0;
-    }
+    // flag = 1;
+    // if(n%2 == 0 && sum%2 != 0){
+    //     flag = 0;
+    // }
     mid_v_i = mid_v_f;
     if(max_v < min_v){
         sum   = max_v;
@@ -51,7 +51,13 @@ int main(){
     }
 
     
-    if(flag){
+    // if(flag){
+    //     printf("%d %d %d", max_v, mid_v_i, min_v);
+    // }
+    // else{
+    //     printf("%d %.1f %d", max_v, mid_v_f, min_v);
+    // }
+    if(mid_v_f == (int)mid_v_f){
         printf("%d %d %d", max_v, mid_v_i, min_v);
     }
     else{
