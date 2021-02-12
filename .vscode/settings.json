@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "cstdlib": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "iostream": "cpp"
     }
 }
