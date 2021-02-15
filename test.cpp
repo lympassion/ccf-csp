@@ -10,10 +10,16 @@ int a[N];
 int main()
 {
 	int cnt;
-	cnt = 3;
-	cnt *= 2-1;
+	cnt = 5;
 	
-	printf("%d\n", cnt);
-	
+	switch(cnt){
+		case 5:
+			printf("sfas\n");
+			cnt++;
+		default:
+			cnt += 3;
+			cnt *= 2;
+	}
+	printf("%d", cnt);
 }
 
