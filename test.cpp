@@ -11,15 +11,9 @@ int main()
 {
 	int cnt;
 	cnt = 5;
+	int arr[6];
 	
-	switch(cnt){
-		case 5:
-			printf("sfas\n");
-			cnt++;
-		default:
-			cnt += 3;
-			cnt *= 2;
-	}
-	printf("%d", cnt);
+
+	printf("%d", sizeof(arr));
 }
 
