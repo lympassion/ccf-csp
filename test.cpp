@@ -1,30 +1,90 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
 using namespace std;
-int main(){
-    int N,L,T;
-	int tmpLine, tmpFirst;
-    scanf("%d%d%d",&N,&L,&T);
-    pair<int,int>ball[N+1];//记录小球信息,小球编号从1开始,first成员记录小球所处位置，second成员记录小球当前的运动方向
-    int line[L+1]={0};//记录线段上小球信息，为0表示没有小球，否则表示小球编号
-    for(int i=1;i<=N;++i){//读取数据
-        scanf("%d",&ball[i].first);
-        ball[i].second=1;
-        line[ball[i].first]=i;
-    }
-    while(T--)//更新T次小球位置信息
-        for(int i=1;i<=N;++i){//遍历N个小球
-            line[ball[i].first]=0;//小球从当前位置移走
-            ball[i].first=ball[i].first+ball[i].second;//小球移动到即将到达的位置处
-			tmpLine = line[ball[i].first];
-			tmpFirst = ball[i].first;
-            if(line[ball[i].first]!=0){//小球移动到即将到达的位置处有其他小球，将这两个小球运动方向均置反向
-                ball[i].second=-ball[i].second;
-                ball[line[ball[i].first]].second=-ball[line[ball[i].first]].second;
-            }else if(ball[i].first==0||ball[i].first==L)//小球移动到即将到达的位置是线段两端
-                ball[i].second=-ball[i].second;//将这个小球运动方向均置反向
-            line[ball[i].first]=i;//小球移动到即将到达的位置处
-        }
-    for(int i=1;i<=N;++i)//输出
-        printf("%d ",ball[i].first);
-    return 0;
+
+int n, k, w, s, c, key[1001];
+
+
+struct Teacher//定义教师结构体
+{
+	int key;//钥匙编号
+	int time;//使用钥匙时间
+	int flag;//设置标识符
+};
+
+bool cmp(const Teacher& t1, const Teacher& t2)//自定义比较函数
+{
+	if (t1.time != t2.time)//使用时间少的先还
+	{
+		return t1.time < t2.time;
+	}
+	else if (t1.flag != t2.flag)//先归还后取出
+	{
+		return t1.flag > t2.flag;
+	}
+	else//钥匙编号从小到大归还
+	{
+		return t1.key < t2.key;
+	}
+}
+
+int main()
+{
+	std::ios::sync_with_stdio(false);
+	vector<Teacher> v;//定义结构体向量
+	cin >> n >> k;
+	for (int i = 1; i <= n; i++)
+	{
+		key[i] = i;
+	}
+    
+    Teacher t;
+	for (int i = 0; i < k; i++)
+	{
+		cin >> w >> s >> c;
+		
+		t.key = w;
+		t.time = s;
+		t.flag = 0;//设置取出标识
+		v.push_back(t);
+		t.key = w;
+		t.time = s + c;
+		t.flag = 1;//设置归还标识
+		v.push_back(t);
+	}
+	sort(v.begin(), v.end(), cmp);//自定义排序
+	for (int i = 0; i < v.size(); i++)
+	{
+		Teacher t = v[i];
+		if (!t.flag)//取出钥匙
+		{
+			for (int j = 1; j <= n; j++)
+			{
+				if (key[j] == t.key)
+				{
+					key[j] = 0;
+					break;
+				}
+			}
+		}
+		else//归还钥匙
+		{
+			for (int j = 1; j <= n; j++)
+			{
+				if (key[j] == 0)//找到空挂钩
+				{
+					key[j] = t.key;
+					break;
+				}
+			}
+		}
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		cout << key[i] << " ";
+	}
+	cout << endl;
+	return 0;
 }
