@@ -1,6 +1,6 @@
 /*
 * description: 
-*       这一个得分为90
+*       第一次提交得分为90，修改后得分为100
 * Author: lympassion
 * Date:   2021/2/21
 */
@@ -33,7 +33,8 @@ int main(){
                         arr2[j][k] = 1;
                         arr2[j][0] += 1;
                         cnt++;
-                        ans[ind_ans++] = (j+1) * 5 + k;
+                        // ans[ind_ans++] = (j+1) * 5 + k;  // 
+                        ans[ind_ans++] = j * 5 + k;
                     }
                     if(cnt == val){
                         break;
@@ -65,3 +66,55 @@ int main(){
     }
     return 0;
 }
+
+
+// #include <cstdio>
+// #include <vector>
+
+// using namespace std;
+
+// vector<int> seats(20,5);  // 声明一个初始大小为20且初始值都为5的向量
+
+// void printSeats(int row, int num) {
+//     for(int i=1; i<=num; i++) {
+//         printf("%d ", row*5+i+5-seats[row]);  // 里面这个表达式很不错
+//     }
+// }
+
+// void requstSeats(int num) {
+//     for(int i=0; i<20; i++) {
+//         if(seats[i] >= num) {
+//             printSeats(i, num);
+//             seats[i] -= num;
+//             num = 0;
+//         }
+//     }
+//     int i = 0;
+//     while(num) {
+//         if(seats[i] > 0) {
+//             if(num <= seats[i]) {
+//                 printSeats(i, num);
+//                 num = 0;
+//                 seats[i] -= num;
+//             }
+//             else {
+//                 printSeats(i, seats[i]);
+//                 num -= seats[i];
+//                 seats[i] = 0;
+//             }
+//         }
+//         i++;
+//     }
+//     printf("\n");
+// }
+
+// int main() {
+//     int N;
+//     scanf("%d", &N);
+    
+//     int req;
+//     for(int n=0; n<N; n++) {
+//         scanf("%d", &req);
+//         requstSeats(req);
+//     }
+// }
