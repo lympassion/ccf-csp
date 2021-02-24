@@ -1,6 +1,7 @@
 /*
 * description: 
-*       参考网上的解法
+*       1. 参考网上的解法
+*       2. 又忘了case的break
 * Author: lympassion
 * Date:   2021/2/24
 */
@@ -84,3 +85,62 @@ int main(){
     
     return 0;
 }
+
+
+// #include <iostream>
+
+// using namespace std;
+
+// const int EAST = 0;
+// const int SOUTH = 1;
+// const int SOUTHWEST = 2;
+// const int NORTHEAST = 3;
+ 
+// struct {
+//     int drow;
+//     int dcol; //EAST  SOUTH  SOUTHWEST  NORTHEAST
+// } direct[] = {{0, 1}, {1, 0}, {1, -1}, {-1, 1}};
+ 
+// const int N = 500;
+ 
+// int a[N][N];
+ 
+// int main()
+// {
+//     int n;
+ 
+//     // 输入数据
+//     cin >> n;
+//     for(int i=0; i<n; i++)
+//         for(int j=0; j<n; j++)
+//             cin >> a[i][j];
+ 
+//     // Z字形扫描，输出结果
+//     int row=0, col=0, next=EAST;
+//     cout << a[row][col];
+//     while(row != n - 1 || col != n - 1) {
+//         row += direct[next].drow;
+//         col += direct[next].dcol;
+//         cout << " " << a[row][col];
+ 
+//         if(next == EAST && row == 0)
+//             next = SOUTHWEST;
+//         else if(next == EAST && row == n - 1)
+//             next = NORTHEAST;
+//         else if(next == SOUTH && col == 0)
+//             next = NORTHEAST;
+//         else if(next == SOUTH && col == n - 1)
+//             next = SOUTHWEST;
+//         else if(next == SOUTHWEST && row == n - 1)  // 虽然当next == SOUTHWEST还有第三种情况，但是这里是elseif，
+//             next = EAST;                            // 不满足条件就不会变
+//         else if(next == SOUTHWEST && col == 0)
+//             next = SOUTH;
+//         else if(next == NORTHEAST && col == n - 1)
+//             next = SOUTH;
+//         else if(next == NORTHEAST && row == 0)
+//             next = EAST;
+//     }
+//     cout << endl;
+ 
+//     return 0;
+// }
