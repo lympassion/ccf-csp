@@ -28,10 +28,10 @@ int main(){
     int n, val;
 
     scanf("%d", &n);
-    for(int i = 0; i < 1003; i++){
-        info1[i].cnt = 0;
-        info1[i].val = 0;
-    }
+    // for(int i = 0; i < 1003; i++){  // 全局变量默认初始为0
+    //     info1[i].cnt = 0;
+    //     info1[i].val = 0;
+    // }
 
     for(int i = 0; i < n; i++){
         scanf("%d", &val);
