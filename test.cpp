@@ -1,12 +1,24 @@
-#include <stdio.h>
+#include <iostream>
+#include <algorithm>
 
-int main() {
-    int n, val;
-    scanf("%d", &n);
-    while (n--)
-    {
-        scanf("%d", &val);
-        printf("%d, val:%d", n, val);
+using namespace std;
+
+struct info
+{
+    int cnt;
+    int val;
+};
+
+info info1[1003];
+
+int main(){
+    int cnt = 0;
+
+    for(int i = 0; i < 1003; i++){
+        if(info1[i].cnt != 0 || info1[i].val != 0){
+            cnt++;
+        }
     }
-    
+    printf("%d", cnt);
+    return 0;
 }
