@@ -29,58 +29,9 @@ direct direct1[4] = {
 
 int arr[502][502];
 int main(){
-    int n, row, col, next;               
-    
-    scanf("%d", &n);
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            scanf("%d", &arr[i][j]);
-        }
-    }
+    int m, n;
 
-    row = col = 0;
-    printf("%d ", arr[row][col]);
-    next = EAST;
-    while (row != n-1 || col != n-1)
-    {
-        row += direct1[next].row;
-        col += direct1[next].col;
-        printf("%d ", arr[row][col]);
-        switch(next){
-            case EAST:
-            if(row == 0){
-                next = SOUTHWEST;
-            }
-            else if(row == n-1){
-                next = NORTHEAST;
-            }
-            break;
-            case SOUTHWEST:
-            if(row == n-1){
-                next = EAST;
-            }
-            else if(col == 0){
-                next = SOUTH;
-            }
-            break;
-            case SOUTH:
-            if(col == 0){
-                next = NORTHEAST;
-            }
-            else if(col == n-1){
-                next = SOUTHWEST;
-            }
-            break;
-            case NORTHEAST:
-            if(col == n-1){  // 这两个的顺序不能反
-                next = SOUTH;
-            }
-            else if(row == 0){
-                next = EAST;
-            }
-            break;
-        }
-    }
+    printf("%s", 40+'0');
     
     return 0;
 }
