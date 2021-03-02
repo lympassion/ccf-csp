@@ -30,8 +30,10 @@ direct direct1[4] = {
 int arr[502][502];
 int main(){
     int m, n;
-
-    printf("%s", 40+'0');
+    n = 2;
+    for(int i = 0; i < n;){
+        printf("%d", i);
+    }
     
     return 0;
 }
