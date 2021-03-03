@@ -1,39 +1,20 @@
 /*
 * description: 
-*       参考网上的解法
-* Author: lympassion
-* Date:   2021/2/24
+* Author: lympassion  
+* Date:   2021/3/3
 */
 
 #include <iostream>
+#include <string.h>
 
 using namespace std;
+ 
 
-const int EAST = 0;
-const int SOUTH = 1;
-const int SOUTHWEST = 2;
-const int NORTHEAST = 3;
-
-struct direct
+int main()
 {
-    int row;
-    int col;
-};
-
-direct direct1[4] = {
-        {0, 1},  // east
-        {1, 0},  // south
-        {1, -1},  // southwest
-        {-1, 1},  // northeast
-    };
-
-int arr[502][502];
-int main(){
-    int m, n;
-    n = 2;
-    for(int i = 0; i < n;){
-        printf("%d", i);
-    }
-    
+    string a[2];
+    a[0] = "afasfd";
+    printf("%s", &a[0]);
+    cout << a[0];
     return 0;
 }
