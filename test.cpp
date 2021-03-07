@@ -1,66 +1,34 @@
-#include<iostream>
-#include<map>
-#include<set>
-#include<cstring>
-#include<string>
-#include<algorithm>
-#include<iomanip>
+#include<bits/stdc++.h>
 using namespace std;
-struct Node{
-	string value;
-	double p;
-	int num;
-	int flag;
-};
-Node node[5005];
-set<double> price;
-set<double>::iterator it;
 int main(){
-	int n=1,i;
-	long long maxnum=0;
-	double maxp;
-	int pos;
-	while(cin>>node[n].value){	
-		if(node[n].value!="cancel"){
-		    cin>>node[n].p>>node[n].num;
-		}	
-		else{
-			cin>>pos;
-			node[n].flag=1;
-			node[pos].flag=1;
-		} 
-		n++;  	
-	}
-	//å°†æœ‰æ•ˆè´­ä¹°ä»·æ ¼åŠ å…¥seté›†åˆä¸­ 
-	for(i=1;i<n;i++){
-		if(node[i].flag!=1&&node[i].value=="buy"){
-			price.insert(node[i].p);
-		}
-	}
-	for(it=price.begin();it!=price.end();it++){
-		long long buynum=0,sellnum=0,num;
-		double p=*it;
-	 	for(i=1;i<n;i++){
-	 		if(node[i].p>=p&&node[i].value=="buy"&&node[i].flag!=1)
-	 		  buynum+=node[i].num;
-            else if(node[i].p<=p&&node[i].value=="sell"&&node[i].flag!=1)
-	 		  sellnum+=node[i].num;
-		 }
-		// for(i=1;i<n;i++){
-	 	// 	if(node[i].p<=p&&node[i].value=="sell"&&node[i].flag!=1)
-	 	// 	  sellnum+=node[i].num;
-		//  }
-		num=min(buynum,sellnum);
-		if(num>=maxnum){
-			maxnum=num;
-			maxp=p;
-		}
-	 }
-	printf("%.2lf %lld\n",maxp,maxnum);
-	//ä¹Ÿå¯ä½¿ç”¨coutè¾“å‡º
-	//cout<<fixed<<setprecision(2)<<maxp<<" ";
-	//cout<<maxnum<<endl;
-	return 0;
-} 
-
-
+    int m,n;
+    scanf("%d%d%*c",&m,&n);
+    vector<string>html;
+    string line;
+    while(m--){
+        getline(cin,line);
+        html.push_back(line);
+    }
+    unordered_map<string,string>strReplace;
+    while(n--){
+        getline(cin,line);
+        int t=line.find(' ');//²éÕÒµÚÒ»¸ö¿Õ¸ñ×Ö·ûµÄÎ»ÖÃ£¬¸Ã¿Õ¸ñ×Ö·û¿ÉÒÔÓÃÀ´·Ö¸î±äÁ¿ÃûºÍÖµ
+        string s1=line.substr(0,t),s2=line.substr(t+2,line.size()-t-3);//s1´æ´¢±äÁ¿Ãû£¬s2´æ´¢È¥³ıÊ×Î²"×Ö·ûµÄÖµ
+        strReplace[s1]=s2;//½«±äÁ¿ÃûºÍÖµ¶ÔÓ¦ÆğÀ´
+    }
+    smatch result;
+    for(string&i:html){
+        auto j=i.cbegin();//´«Èëregex_searchµÄµü´úÆ÷ĞèÒªÊÇconst_iteratorÀàĞÍ
+        while(regex_search(j,i.cend(),result,regex("\\{\\{ ([^\\}]+) \\}\\}"))){//ÔÚ×Ö·û´®ÖĞ²éÕÒÓĞ×Ó×Ö·û´®Æ¥Åä³É¹¦
+            for(;j!=result[0].first;++j)//Êä³ö´Ó¿ªÊ¼ËÑË÷µÄÎ»ÖÃµ½Æ¥Åä³É¹¦µÄ×Ó×Ö·û´®µÄÆğÊ¼Î»ÖÃµÄËùÓĞ×Ö·û
+                printf("%c",*j);
+            auto k=strReplace.find(result[1]);//²é¿´strReplaceÖĞÊÇ·ñÓĞÏàÓ¦µÄ±äÁ¿Ãû
+            printf("%s",k!=strReplace.end()?(k->second).c_str():"");//Êä³ö±äÁ¿Ãû¶ÔÓ¦µÄÖµ
+            j=result[0].second;//½«ÏÂÒ»¸ö¿ªÊ¼ËÑË÷Î»ÖÃ¸üĞÂÎªµ±Ç°Æ¥Åä³É¹¦µÄ×Ó×Ö·û´®µÄÄ©Î²Î»ÖÃ
+        }
+        for(;j!=i.cend();++j)//Êä³ö´Ó×îºóÒ»¸öÆ¥Åä³É¹¦µÄ×Ó×Ö·û´®µÄÄ©Î²Î»ÖÃµ½Õû¸ö×Ö·û´®Ä©Î²Î»ÖÃµÄËùÓĞ×Ö·û
+            printf("%c",*j);
+        puts("");//»»ĞĞ
+    }
+    return 0;
+}
